@@ -1,0 +1,23 @@
+{
+  "name": "mat885-booktradingclub-freecodecamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martin885/mat885-BookTradingClub-freecodecamp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martin885/mat885-BookTradingClub-freecodecamp/issues"
+  },
+  "homepage": "https://github.com/martin885/mat885-BookTradingClub-freecodecamp#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.2"
+  }
+}
