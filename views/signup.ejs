@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Passport local tutorial</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" ´ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+</head>
+
+<body>
+    <div class="conatiner" style="margin-bottom:100px">
+
+
+        <div class="text-center reg_msg">
+            <h2 style="color:#808080">
+                <span>SIGN UP</span>
+                <span><h3><%= signupError %></h3></span>
+            </h2>
+        </div>
+        <br>
+        <div class="row signup">
+            <form action="/signup" method="post">
+                <div class="row form-group ">
+                    <div class="col-sm-12">
+                        <input type="text" name="name" id="fullname" class="form-control" placeholder="enter name...">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <input type="text" name="email" id="email" class="form-control" placeholder="enter email...">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-sm-12">
+                        <input type="password" name="password" id="password" class="form-control"
+                         placeholder="enter password...">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <input type="submit" name="submit" id="sign_up" class="form-control btn btn-primary"
+                        value="SIGN UP">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
