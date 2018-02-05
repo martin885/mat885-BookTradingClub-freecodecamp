@@ -17,7 +17,7 @@ router.get('/signup',function(req,res){
 
 
 router.post('/signup',passport.authenticate('local.signup',{
-    successRedirect:'/profile',
+    successRedirect:'/profileSearch',
     failureRedirect:'/signup',
     failureFlash:true
 }));
@@ -33,15 +33,15 @@ res.render('login',{loginError:req.flash('loginError'),passwordError:req.flash('
 
 
 router.post('/login',passport.authenticate('local.login',{
-successRedirect:'/profile',
+successRedirect:'/profileSearch',
 failureRedirect:'/login',
 failureFlash:true
 }));
 
-router.get('/profile',isLoggedIn,function(req,res){
-    console.log(req.user);
-    res.render('profile',{user:req.user});
+router.get('/profileSearch',isLoggedIn,function(req,res){
+    res.render('profileSearch',{user:req.user});
 });
+
 
 
 
@@ -53,6 +53,8 @@ router.get('/logout',function(req,res){
 });
 
 module.exports=router;
+
+
 
 function isLoggedIn(req,res,next){
     if(req.isAuthenticated()){

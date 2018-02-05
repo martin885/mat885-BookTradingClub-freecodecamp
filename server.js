@@ -8,6 +8,8 @@ const passport=require('passport');
 const MongoStore=require('connect-mongo')(session);
 
 
+const port=Number(process.env.PORT || 8080);
+
 const flash=require('express-flash');
 
  const app=express();
@@ -17,6 +19,7 @@ mongoose.connect('mongodb://localhost/booktradingclub');
 
 
 const user=require('./controllers/user');
+const profile=require('./controllers/profile');
 
 require('./config/passport');
 
@@ -40,7 +43,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(user);
+app.use(profile);
 
-app.listen(8080,function(){
-    console.log('OK');
+
+
+app.listen(port,function(){
+    console.log('Listen on port '+ port);
 });

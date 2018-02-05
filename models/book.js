@@ -1,21 +1,22 @@
 const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const User=require('./user.js');
 
-const BookSchema=new Schema({
+const BookSchema=mongoose.Schema({
+    id:String,
     title:String,
-    author:String,
+    authors:[String],
     publisher:String,
     description:String,
     link:String,
     imageUrl:String,
     owner:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
     status:{
+      
+      
         type:String,
-     
-     
         enum:['available','pending'],
         default:'available'
     }
