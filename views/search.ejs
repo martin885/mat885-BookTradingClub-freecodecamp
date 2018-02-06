@@ -1,3 +1,5 @@
+<a href="/profile">Logout</a>
+<a href="/profileSearch">Logout</a>
 
 <div class="container">
     <div class="row mt-4 mb-4">
@@ -21,7 +23,6 @@
                                 <input type="hidden" name="link" value="<%= book.link %>">
                                 <input type="hidden" name="imageUrl" value="<%= book.thumbnail %>">
                                 <input type="submit" class="card-link btn btn-primary btn-block" value="Add Book">
-
                             </form>
                     </div>
                 </div>
@@ -29,3 +30,8 @@
             <% }) %>
     </div>
 </div>
+
+
+<%- include ./general/scripts %>
+
+<a href="/logout">Logout</a>

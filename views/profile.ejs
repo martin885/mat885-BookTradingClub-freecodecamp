@@ -3,8 +3,16 @@
 </h2>
 
 
-
-
+<form action="/search" method=get>
+    <div class="form-group">
+        <div class="input-group col-lg-8 offset-lg-2">
+            <input type="text" class="form-control" placeholder="Book Title..." name="title">
+            <span class="input-group-btn">
+                <button class="btn btn-success" type="submit">Search</button>
+            </span>
+        </div>
+    </div>
+</form>
 
 
 
@@ -46,10 +54,11 @@
                                                 <%= book.publisher %>
                                             </td>
                                             <td>
-                                                <form action="/profile/removeBook/<%= book._id %>" method="POST"></form>
+                                                <form action="/profile/removeBook/<%= book._id %>" method="post">
 
 
-                                                <input type="submit" class="btn btn-primary btn-block" value="Remove">
+                                                    <input type="submit" class="btn btn-primary btn-block" value="Remove">
+                                                </form>
                                             </td>
                                         </tr>
                                         <% }) %>
@@ -60,11 +69,14 @@
                 </div>
             </div>
             <%} else { %>
-                
-                
+
+
                 <h3>Your book list is empty, add some books</h3>
                 <% } %>
     </div>
 </div>
+
+<%- include ./general/scripts %>
+
 
 <a href="/logout">Logout</a>
