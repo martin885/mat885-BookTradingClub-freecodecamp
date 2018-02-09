@@ -8,18 +8,20 @@ const passport=require('passport');
 const MongoStore=require('connect-mongo')(session);
 
 
+require('dotenv').config();
 const port=Number(process.env.PORT || 8080);
 
 const flash=require('express-flash');
 
  const app=express();
 
-mongoose.connect('mongodb://localhost/booktradingclub');
+mongoose.connect(process.env.MONGOURI||'mongodb://localhost/booktradingclub');
 
 
 
 const user=require('./controllers/user');
 const profile=require('./controllers/profile');
+const tradeBooks=require('./controllers/tradeBooks');
 
 require('./config/passport');
 
@@ -46,6 +48,7 @@ app.use(user);
 app.use(profile);
 
 
+app.use('/tradeBooks',tradeBooks);
 
 app.listen(port,function(){
     console.log('Listen on port '+ port);

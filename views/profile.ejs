@@ -1,8 +1,6 @@
-<h2>
-    <%= user.fullname %>
-</h2>
-
-
+<%- include ./general/header %>
+<%- include ./general/navbar %>
+<br>
 <form action="/search" method=get>
     <div class="form-group">
         <div class="input-group col-lg-8 offset-lg-2">
@@ -75,8 +73,5 @@
                 <% } %>
     </div>
 </div>
-
 <%- include ./general/scripts %>
 
-
-<a href="/logout">Logout</a>

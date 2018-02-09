@@ -8,6 +8,8 @@ const userSchema=new Schema({
     fullname:{type:String},
     email:{type:String},
     password:{type:String},
+    city:{type:String},
+    state:{type:String},
     addedBooks:[]
 });
 

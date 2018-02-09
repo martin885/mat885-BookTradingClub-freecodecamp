@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 const Book = require('../models/book');
-const Trade=require('../models/trade');
+const Trade = require('../models/trade');
 const books = require('google-books-search');
 
 
@@ -93,6 +93,7 @@ router.get('/search', function (req, res) {
         if (!err) {
             res.render('search', {
                 title: `search page`,
+                user:req.user,
                 books: results
             });
         }
@@ -106,39 +107,39 @@ router.get('/search', function (req, res) {
 router.post('/profile/trade/:bookId', isLoggedIn, function (req, res) {
     var bookId = req.params.bookId;
     var currentUser = req.user._id;
-    Book.findById(bookId)
-    populate({ path: 'owner', model: 'User' }).
+    Book.findById(bookId).
+    populate({ path:'owner', model:'User' }).
         exec(function (err, book) {
             var bookOwner = book.owner._id;
             if (currentUser.equals(bookOwner)) {
                 req.flash('tradeMessage', 'You are the owner of this book');
                 res.redirect('/allbooks');
-            }else{
+            } else {
                 Trade.findOne({
-                    from:currentUSer,
-                    to:bookOwner,
-                    book:book._id,
-                    status:'pending'
-                },function(err,trade){
-                    if(err){
-                       return console.log(err);
+                    from: currentUser,
+                    to: bookOwner,
+                    book: book._id,
+                    status: 'pending'
+                }, function (err, trade) {
+                    if (err) {
+                        return console.log(err);
                     }
-                    if(trade){
+                    if (trade) {
                         consolle.log('The request is already done');
-                        req.flash('tradeMessage','You alredy do this request to the owner');
+                        req.flash('tradeMessage', 'You alredy do this request to the owner');
                         res.redirect('/allbooks');
-                    }else{
-                        var newTrade=new Trade();
-                        newTrade.from=currentUser;
-                        newTrade.to=bookOwner;
-                        newTrade.book=book;
+                    } else {
+                        var newTrade = new Trade();
+                        newTrade.from = currentUser;
+                        newTrade.to = bookOwner;
+                        newTrade.book = book;
 
-                        newTrade.save(function(err){
-                            if(err){
+                        newTrade.save(function (err) {
+                            if (err) {
                                 return console.log(err);
                             }
-                            book.status='pending';
-                            req.flash('tradeMessage','Request done ok');
+                            book.status = 'pending';
+                            req.flash('tradeMessage', 'Request done ok');
                             res.redirect('/allbooks');
                         });
                     }
@@ -147,8 +148,74 @@ router.post('/profile/trade/:bookId', isLoggedIn, function (req, res) {
         });
 });
 
+router.get('/allbooks', isLoggedIn, function (req, res) {
+    Book.find({ status: 'available' }).
+        populate({ path: 'owner', model: 'User' }).
+        exec(function (err, books) {
+            if (err) {
+                return console.log(err);
+            }
+            var currentUser = req.user._id;
 
+            Trade.find({
+                to: currentUser,
+                status: 'pending'
+            }).populate({
+                path: 'book',
+                model: 'Book'
+            }).exec(function (err, reqsToUser) {
 
+                if(err){
+                    return console.log(err);
+                }
+
+                var reqsToUserCount = reqsToUser.length;
+
+                Trade.find({
+                    from: currentUser,
+                    status: 'pending'
+                }).populate({
+                    path: 'book',
+                    model: 'Book'
+                }).exec(function (err, reqsFromUser) {
+                    var reqsFromUserCount = reqsFromUser.length;
+                    res.render('tradeList', {
+                        title: 'Trade List',
+                        message: req.flash('tradeMessage'),
+                        user:req.user,
+                        books: books,
+                        reqsToUser: reqsToUser,
+                        reqsFromUser: reqsFromUser
+                    });
+                });
+            });
+        });
+});
+
+router.get('/profile/settings/:id',isLoggedIn,function(req,res){
+    res.render('profileSettings',{
+        title:'Settings',
+        user:req.user,
+        message:req.flash('settingMessage')
+    })
+});
+
+router.post('/profile/settings/:id',isLoggedIn,function(req,res){
+    var id=req.params.id;
+    var newUsername=req.body.username;
+    var city=req.body.city;
+    var state=req.body.state;
+    User.findByIdAndUpdate(id,{
+        fullname:newUsername,
+        city:city,
+        state:state
+    },{new:true},function(err,user){
+        if(err){
+            res.flash('settingMessage','An error has occurred');
+        }
+        res.redirect('/profile');
+    });
+});
 
 module.exports = router;
 

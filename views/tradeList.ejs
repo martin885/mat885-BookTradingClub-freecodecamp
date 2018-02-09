@@ -1,70 +1,128 @@
-
+<%- include ./general/header %>
+<%- include ./general/navbar %>
 <body>
-    <div class="container">
-        <div id="book" class="mt-4">
-            <% if(books.length>0){ %>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading bg-main-color">
-                                <h3 style="color:aquamarine;">Your Book List</h3>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table table-stripped table-hover">
-                                    <thead>
+    <% if(message.length>0){ %>
+        <div class="alert alert-dismissible alert-warning container mt-3">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <h4>Message</h4>
+            <p>
+                <%= message %>
+            </p>
+        </div>
+        <% } %>
+            <div class="container">
+                <h2> Hello
+                    <%= user.fullname %>
+                </h2>
+                <button type="button" class="btn btn-primary">
+                    Your trade requests
+                    <span class="badge badge-light ml-4">
+                        <%= reqsFromUser.length %>
+                    </span>
+                </button>
+
+
+
+
+
+                <button type="button" class="btn btn-primary">
+                    Trade request for you
+                    <span class="badge badge-light ml-4">
+                        <%= reqsToUser.length %>
+                    </span>
+                </button>
+
+
+
+                <% if(reqsFromUser.length>0){ %>
+                    <hr style="border-color:#fff">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p style="color:aquamarine">Your trade requests</p>
+                            <table class="table table-striped table-hover table-bordered mt-2">
+
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Book Title</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% reqsFromUser.forEach(function(tradeReq,i){%>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Title</th>
-                                            <th>Image</th>
-                                            <th>Publisher</th>
-                                            <th>Action</th>
+                                            <td>
+                                                <% i+1 %>
+                                            </td>
+                                            <td>
+                                                <%= tradeReq.book.title %>
+                                            </td>
+                                            <td>
+                                                <form action="/tradeBooks/cancelRequest/<%= tradeReq._id %>" method="post">
+                                                    <input type="submit" class="btn btn-warning" value="Cancel Request">
+                                                </form>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% books.forEach(function(book,i){ %>
-                                            <tr>
-                                                <td>
-                                                    <%= i+1 %>
-                                                </td>
-                                                <td>
-                                                    <a href="<%= book.link %>" style="text-decoration:none;">
-                                                        <%= book.title %>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <img src="<%= book.imageUrl %>" alt="">
-                                                </td>
-                                                <td>
-                                                    <%= book.publisher %>
-                                                </td>
-                                                <td>
-                                                    <form action="/profile/removeBook/<%= book._id %>" method="post">    
-                                                        <input type="submit" class="btn btn-primary btn-block" value="Remove">
-                                                    </form>
-                                                    <form action="/profile/trade/<%= book._id %>">
-                                                    <input type="submit" class="btn btn-success btn-block" value="Trade">
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <% }) %>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        <% }) %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
-                <%} else { %>
-    
-    
-                    <h3>Your book list is empty, add some books</h3>
                     <% } %>
-        </div>
-    </div>
-
-    <%- include ./general/scripts %>
+                        <% if(reqsToUser.length>0){ %>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p style="color:aquamarine">Trade requests for you</p>
+                                    <table class="table table-striped table-hover table-bordered mt-2">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Book Title</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <% reqsToUser.forEach(function(tradeReq,i){ %>
+                                                    <tr>
+                                                        <td>
+                                                            <% i+1 %>
+                                                        </td>
+                                                        <td>
+                                                            <%= tradeReq.book.title %>
+                                                        </td>
+                                                        <td>
+                                                            <form action="/tradeBooks/acceptRequest/<%= tradeReq._id %>" method="post">
+                                                                <input type="submit" class="btn btn-block btn-success" value="Accept">
+                                                            </form>
+                                                            <form action="/tradeBooks/rejectRequest/<%= tradeReq._id %>" method="post">
+                                                                <input type="submit" class="btn btn-block" value="Reject">
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <% } %>
+                                <hr style="border-color:#fff">
+                                <h2 class="mt-2">All Books</h2>
+                                <div class="row">
+                                    <% books.forEach(function(book){ %>
+                                        <div class="col-lg-3 mt-2 mb-2">
+                                            <div class="card">
+                                                <img src="<%= book.imageUrl %>" alt="Card image" class="center-block mt-3 mb-3" style="height:168px;width:128px;">
+                                                <div class="card-block">
+                                                    <form action="/profile/trade/<%= book._id %>" method="post">
+                                                        <input type="submit" class="btn btn-info btn-block" value="Trade">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                                </div>
+            </div>
+            <%- include ./general/scripts %>
 </body>
-
-
-
-
-
